@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class SpaceshipController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<List<Spaceship>> getAllSpaceships(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
 		final Page<Spaceship> pageResult = service.findAll(PageRequest.of(page, size));
@@ -37,22 +39,26 @@ public class SpaceshipController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<Spaceship> getSpaceshipById(@PathVariable Long id) {
 		return service.findById(id).map(spaceship -> new ResponseEntity<>(spaceship, HttpStatus.OK))
 			.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	@GetMapping("/search")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<List<Spaceship>> getSpaceshipsByName(@RequestParam String name) {
 		return new ResponseEntity<>(service.findByNameContaining(name), HttpStatus.OK);
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Spaceship> createSpaceship(@RequestBody Spaceship spaceship) {
 		return new ResponseEntity<>(service.save(spaceship), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Spaceship> updateSpaceship(@PathVariable Long id, @RequestBody Spaceship spaceship) {
 		return service.findById(id).map(existSpaceship -> {
 			spaceship.setId(id);
@@ -61,6 +67,7 @@ public class SpaceshipController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Void> deleteSpaceship(@PathVariable Long id) {
 		service.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

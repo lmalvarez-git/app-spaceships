@@ -1,17 +1,12 @@
 package com.rest.movie.spaceships.api.model;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @lombok.Generated
 @Entity
@@ -20,13 +15,13 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Spaceship implements Serializable {
-
-	@Serial
-	private static final long serialVersionUID = 3589170347243249748L;
+public class Userlogin implements Serializable {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
-	private String movieSeries;
+	private String userName;
+	private String password;
+	private String role;
+	
 }

@@ -47,7 +47,7 @@ class SpaceshipServiceTest {
 
 		assertNotNull(result);
 		assertEquals(2, result.getTotalElements());
-		assertEquals("X-Wing", result.getContent().get(0).getName());
+		assertEquals("X-Wing", result.getContent().getFirst().getName());
 		verify(repository, times(1)).findAll(pageable);
 	}
 
