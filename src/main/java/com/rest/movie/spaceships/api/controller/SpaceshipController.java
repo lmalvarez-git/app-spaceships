@@ -32,7 +32,7 @@ public class SpaceshipController {
 	@GetMapping
 	public ResponseEntity<List<Spaceship>> getAllSpaceships(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
-		Page<Spaceship> pageResult = service.findAll(PageRequest.of(page, size));
+		final Page<Spaceship> pageResult = service.findAll(PageRequest.of(page, size));
 		return new ResponseEntity<>(pageResult.getContent(), HttpStatus.OK);
 	}
 
@@ -49,8 +49,7 @@ public class SpaceshipController {
 
 	@PostMapping
 	public ResponseEntity<Spaceship> createSpaceship(@RequestBody Spaceship spaceship) {
-		Spaceship savedSpaceship = service.save(spaceship);
-		return new ResponseEntity<>(savedSpaceship, HttpStatus.CREATED);
+		return new ResponseEntity<>(service.save(spaceship), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
